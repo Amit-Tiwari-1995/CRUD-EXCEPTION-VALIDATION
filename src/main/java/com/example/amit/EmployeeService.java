@@ -36,5 +36,45 @@ public class EmployeeService {
 		}
 
 	}
+	
+	
+	
+	public Employee updateEmployee(EmployeeDto dto, int id) throws EmployeeNotFoundException {
+		Employee employee = employeeRepository.findByEmployeeId(id);
+
+		if (employee != null) {
+
+			employee.setEmployeeName(dto.getEmployeeName());
+			employee.setEmployeeMobile(dto.getEmployeeMobile());
+			employee.setEmployeeEmail(dto.getEmployeeEmail());
+			employee.setEmployeeGender(dto.getEmployeeGender());
+			employee.setEmployeeSalary(dto.getEmployeeSalary());
+
+			return employeeRepository.save(employee);
+		} else {
+			throw new EmployeeNotFoundException("There is no employee found to update with this id: " + id);
+		}
+
+	}
+
+	
+	@Transactional
+	public void deleteEmployee(int id) throws EmployeeNotFoundException {
+
+		Employee employee = employeeRepository.findByEmployeeId(id);
+
+		if (employee != null) {
+			employeeRepository.deleteByEmployeeId(employee.getEmployeeId());
+
+		}
+
+		else {
+			throw new EmployeeNotFoundException("Employee not found to delete with this id: " + id);
+		}
+
+	}
+
+	
+	
 
 }
